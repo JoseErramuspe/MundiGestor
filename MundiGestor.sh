@@ -57,7 +57,6 @@ mostrarMenu() {
 			clear
 			echo "Opcion invalida, presione ENTER para continuar..."
 			read cont
-			mostrarMenu
 			;;
 	esac
 }
@@ -65,7 +64,6 @@ mostrarMenu() {
 volverAlMenu() {
 	echo "Presione ENTER para volver al menu..."
 	read cont
-	mostrarMenu
 }
 
 listarEquipos() {
@@ -118,6 +116,7 @@ mostrarCreditos() {
 	echo "| Damián Agustín Torres Aramburu   - 371643 |"
 	echo "|===========================================|"
 	volverAlMenu
+	return
 }
 
 mostrarCampeonActual() {
@@ -164,6 +163,7 @@ buscarEquipo() {
 	if [ "$(grep -c ^e: MGData)" -eq 0 ]; then
 		echo "No se han registrado equipos aun"
 		volverAlMenu
+		return
 	else
 		read -p "Ingrese nombre del equipo a buscar: " equipoBuscado
 		clear
@@ -183,9 +183,11 @@ buscarEquipo() {
 				fi
 			fi
 			volverAlMenu
+			return
 		else
 			echo "El equipo $equipoBuscado no se encuentra registrado"
 			volverAlMenu
+			return
 		fi
 	fi
 }
@@ -201,6 +203,7 @@ registrarEquipo() {
 				clear
 				echo "Error: el equipo ya se encuentra registrado"
 				volverAlMenu
+				return
 			fi
 			if [ -n "$nuevoEquipo" ]; then
 				clear
@@ -208,19 +211,23 @@ registrarEquipo() {
 				echo "c:$nuevoEquipo" >> MGData
 				echo "Equipo registrado con exito!"
 				volverAlMenu
+				return
 			else
 				clear
 				echo "Error: nombre del equipo vacio"
 				volverAlMenu
+				return
 			fi
 		else
 			clear
 			echo "Registro de equipo cancelado exitosamente!"
 			volverAlMenu
+			return
 		fi
 	else
 		echo "Error: cantidad maxima de equipos registrados (15)"
 		volverAlMenu
+		return
 	fi
 }
 
@@ -230,6 +237,7 @@ registrarPartido() {
 		clear
 		echo "No se han registrado equipos aun"
 		volverAlMenu
+		return
 	fi
 	read -p "Desea registrar un nuevo partido? (y/n)" opcion
 	if [ "$opcion" == "y" ]; then
@@ -240,27 +248,32 @@ registrarPartido() {
 			clear
 			echo "Error: equipo 1 no existe o ya fue eliminado"
 			volverAlMenu
+			return
 		fi
 		if [ -z "$equipo1" ]; then
 			clear
 			echo "Error: Nombre del equipo 1 vacio"
 			volverAlMenu
+			return
 		fi
 		read -p "Ingrese goles del equipo 1: " puntajeEquipo1
 		if [ $puntajeEquipo1 -lt 0 ]; then
 			clear
 			echo "Error: no se permiten puntajes negativos"
 			volverAlMenu
+			return
 		fi
 		if [ -z "$puntajeEquipo1" ]; then
 			clear
 			echo "Error: no se ingreso puntaje"
 			volverAlMenu
+			return
 		fi
 		if [ -z "$(echo $puntajeEquipo1 | grep "^[0-9]*$")" ]; then
 			clear
 			echo "Error: puntaje ingresado debe contener solamente numeros naturales"
 			volverAlMenu
+			return
 		fi
 		
 		clear
@@ -270,32 +283,38 @@ registrarPartido() {
 			clear
 			echo "Error: equipo 2 no existe o ya fue eliminado"
 			volverAlMenu
+			return
 		fi
 		if [ -z "$equipo2" ]; then
 			clear
 			echo "Error: Nombre del equipo 2 vacio"
 			volverAlMenu
+			return
 		fi
 		if [ "$equipo1" == "$equipo2" ]; then
 			clear
 			echo "Error: un equipo no puede jugar contra si mismo"
 			volverAlMenu
+			return
 		fi
 		read -p "Ingrese goles del equipo 2: " puntajeEquipo2
 		if [ $puntajeEquipo2 -lt 0 ]; then
 			clear
 			echo "Error: no se permiten puntajes negativos"
 			volverAlMenu
+			return
 		fi
 		if [ -z "$puntajeEquipo2" ]; then
 			clear
 			echo "Error: no se ingreso puntaje"
 			volverAlMenu
+			return
 		fi
 		if [ -z "$(echo $puntajeEquipo2 | grep "^[0-9]*$")" ]; then
 			clear
 			echo "Error: puntaje ingresado debe contener solamente numeros naturales"
 			volverAlMenu
+			return
 		fi
 		
 		clear
@@ -317,32 +336,38 @@ registrarPartido() {
 					clear
 					echo "Error: no se permiten puntajes negativos"
 					volverAlMenu
+					return
 				fi
 				if [ -z "$penalesEquipo1" ]; then
 					clear
 					echo "Error: no se ingreso puntaje"
 					volverAlMenu
+					return
 				fi
 				if [ -z "$(echo $penalesEquipo1 | grep "^[0-9]*$")" ]; then
 					clear
 					echo "Error: puntaje ingresado debe contener solamente numeros naturales"
 					volverAlMenu
+					return
 				fi
 				read -p "Ingrese goles del equipo 2 ($equipo2) en penales: " penalesEquipo2
 				if [ $penalesEquipo2 -lt 0 ]; then
 					clear
 					echo "Error: no se permiten puntajes negativos"
 					volverAlMenu
+					return
 				fi
 				if [ -z "$penalesEquipo2" ]; then
 					clear
 					echo "Error: no se ingreso puntaje"
 					volverAlMenu
+					return
 				fi
 				if [ -z "$(echo $penalesEquipo2 | grep "^[0-9]*$")" ]; then
 					clear
 					echo "Error: puntaje ingresado debe contener solamente numeros naturales"
 					volverAlMenu
+					return
 				fi
 				if [ $penalesEquipo1 -gt $penalesEquipo2 ]; then
 					equipoABorrar=$(grep -n "^c:$equipo2" MGData | cut -d: -f1)
@@ -354,6 +379,7 @@ registrarPartido() {
 					clear
 					echo "Error: misma cantidad de goles de penales"
 					volverAlMenu
+					return
 				fi
 			fi
 			clear
@@ -365,14 +391,17 @@ registrarPartido() {
 				echo "Partido $equipo1 $puntajeEquipo1($penalesEquipo1) - $puntajeEquipo2($penalesEquipo2) $equipo2 registrado con exito!"
 			fi
 			volverAlMenu
+			return
 		else
 			echo "Registro cancelado exitosamente!"
 			volverAlMenu
+			return
 		fi
 	else
 		clear
 		echo "Registro cancelado exitosamente!"
 		volverAlMenu
+		return
 	fi
 }
 
@@ -387,16 +416,20 @@ borrarDatos() {
 			: > MGData
 			echo "Datos eliminados exitosamente!"
 			volverAlMenu
+			return
 		else
 			clear
 			echo "Eliminacion de datos cancelada exitosamente!"
 			volverAlMenu
+			return
 		fi
 	else
 		clear
 		echo "Eliminacion de datos cancelada exitosamente!"
 		volverAlMenu
+		return
 	fi
 }
-
-mostrarMenu
+while true; do
+	mostrarMenu
+done
