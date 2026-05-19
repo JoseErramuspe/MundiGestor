@@ -29,6 +29,7 @@ MundiGestor
 ---
 ## ✏️ Desarrollo del Sistema
 MundiGestor fue desarrollado utilizando las herramientas Notepad++ y se ejecutó con propósitos de testeo utilizando WSL en un entorno Windows 11. El sistema no contiene código generado con IA.
+
 ---
 ## ⭐ Créditos
 El sistema fue desarrollado por:
