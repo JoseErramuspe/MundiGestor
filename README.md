@@ -1,5 +1,6 @@
 # ⚽ MundiGestor
-Un sistema hecho en bash scripting que permite gestionar partidos y equipos de un torneo mundial de futbol por eliminación directa.
+### Un sistema hecho en bash scripting que permite gestionar partidos y equipos de un torneo mundial de futbol por eliminación directa.
+
 ---
 ## 🛠️ Requerimientos
 El/los requerimientos y software requeridos para ejecutar MundiGestor son:
