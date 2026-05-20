@@ -24,7 +24,7 @@ MundiGestor se estructura en los siguientes archivos:
 ```
 MundiGestor
 ├ MundiGestor.sh   # Lógica y ejecución del código, ingreso y lectura de datos
-├ MGData           # Almacenamiento de datos
+├ MGData           # Almacenamiento de datos, contiene datos de prueba
 └ README.md        # Archivo README.md
 ```
 ---
