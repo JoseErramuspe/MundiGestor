@@ -167,18 +167,18 @@ buscarEquipo() {
 	else
 		read -p "Ingrese nombre del equipo a buscar: " equipoBuscado
 		clear
-		if [ -n "$(grep -i ^e:$equipoBuscado MGData)" ]; then
+		if [ -n "$(grep -i ^e:$equipoBuscado$ MGData)" ]; then
 			echo "El equipo $equipoBuscado se encuentra registrado"
 			read -p "Mostrar partidos del equipo? (y/n) " opcion
 			clear
 			if [ "$opcion" == "y" ]; then
-				if [ "$(grep ^p: MGData | cut -d":" -f2 | grep -ic $equipoBuscado)" -eq 0 ]; then
+				if [ "$(grep ^p: MGData | cut -d":" -f2 | grep -ic "\<$equipoBuscado\>")" -eq 0 ]; then
 					echo "$equipoBuscado aun no ha jugado partidos"
 				else
 					echo "|============================|"
 					echo "| Partidos de $equipoBuscado: |"
 					echo "|============================|"
-					grep ^p: MGData | cut -d":" -f2 | grep -i $equipoBuscado | sed "s/^/| /"
+					grep ^p: MGData | cut -d":" -f2 | grep -i "\<$equipoBuscado\>" | sed "s/^/| /"
 					echo "|============================|"
 				fi
 			fi
@@ -199,7 +199,7 @@ registrarEquipo() {
 		if [ "$opcion" == "y" ]; then
 			clear
 			read -p "Ingrese nombre del nuevo equipo: " nuevoEquipo
-			if [ -n "$(grep -i ^e:$nuevoEquipo MGData)" ]; then
+			if [ -n "$(grep -i ^e:$nuevoEquipo$ MGData)" ]; then
 				clear
 				echo "Error: el equipo ya se encuentra registrado"
 				volverAlMenu
@@ -244,7 +244,7 @@ registrarPartido() {
 		clear
 		listarEquipos
 		read -p "Ingrese equipo 1 del partido: " equipo1
-		if [ -z "$(grep -i ^c:$equipo1 MGData)" ]; then
+		if [ -z "$(grep -i ^c:$equipo1$ MGData)" ]; then
 			clear
 			echo "Error: equipo 1 no existe o ya fue eliminado"
 			volverAlMenu
@@ -279,7 +279,7 @@ registrarPartido() {
 		clear
 		listarEquipos
 		read -p "Ingrese equipo 2 del partido: " equipo2
-		if [ -z "$(grep -i ^c:$equipo2 MGData)" ]; then
+		if [ -z "$(grep -i ^c:$equipo2$ MGData)" ]; then
 			clear
 			echo "Error: equipo 2 no existe o ya fue eliminado"
 			volverAlMenu
@@ -324,10 +324,10 @@ registrarPartido() {
 			local penalesEquipo2=0
 			clear
 			if [ $puntajeEquipo1 -gt $puntajeEquipo2 ]; then
-				equipoABorrar=$(grep -n "^c:$equipo2" MGData | cut -d: -f1)
+				equipoABorrar=$(grep -n "^c:$equipo2$" MGData | cut -d: -f1)
 				sed -i ${equipoABorrar}d MGData
 			elif [ $puntajeEquipo1 -lt $puntajeEquipo2 ]; then
-				equipoABorrar=$(grep -n "^c:$equipo1" MGData | cut -d: -f1)
+				equipoABorrar=$(grep -n "^c:$equipo1$" MGData | cut -d: -f1)
 				sed -i ${equipoABorrar}d MGData
 			elif [ $puntajeEquipo1 -eq $puntajeEquipo2 ]; then
 				echo "Partido empatado..."
@@ -370,10 +370,10 @@ registrarPartido() {
 					return
 				fi
 				if [ $penalesEquipo1 -gt $penalesEquipo2 ]; then
-					equipoABorrar=$(grep -n "^c:$equipo2" MGData | cut -d: -f1)
+					equipoABorrar=$(grep -n "^c:$equipo2$" MGData | cut -d: -f1)
 					sed -i ${equipoABorrar}d MGData
 				elif [ $penalesEquipo1 -lt $penalesEquipo2 ]; then
-					equipoABorrar=$(grep -n "^c:$equipo1" MGData | cut -d: -f1)
+					equipoABorrar=$(grep -n "^c:$equipo1$" MGData | cut -d: -f1)
 					sed -i ${equipoABorrar}d MGData
 				elif [ $penalesEquipo1 -eq $penalesEquipo2 ]; then
 					clear
